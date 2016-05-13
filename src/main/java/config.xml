@@ -13,7 +13,6 @@
     </property>  
 
     <mapping class="com.jia.User"/> 
-    <mapping class="com.jia.Teacher"/> 
     
   </session-factory>  
 </configuration> 

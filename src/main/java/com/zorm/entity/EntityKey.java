@@ -13,6 +13,7 @@ import com.zorm.type.Type;
 import com.zorm.util.EqualsHelper;
 
 public final class EntityKey implements Serializable{
+	private static final long serialVersionUID = 7159183300241960324L;
 	private final Serializable identifier;
 	private final String entityName;
 	private final String rootEntityName;
@@ -22,17 +23,6 @@ public final class EntityKey implements Serializable{
 	private final boolean isBatchLoadable;
 	private final SessionFactoryImplementor factory;
 	
-	/**
-	 * Construct a unique identifier for an entity class instance.
-	 * <p>
-	 * NOTE : This signature has changed to accommodate both entity mode and multi-tenancy, both of which relate to
-	 * the Session to which this key belongs.  To help minimize the impact of these changes in the future, the
-	 * {@link SessionImplementor#generateEntityKey} method was added to hide the session-specific changes.
-	 *
-	 * @param id The entity id
-	 * @param persister The entity persister
-	 * @param tenantId The tenant identifier of the session to which this key belongs
-	 */
 	public EntityKey(Serializable id, EntityPersister persister, String tenantId) {
 		if ( id == null ) {
 			throw new AssertionFailure( "null identifier" );

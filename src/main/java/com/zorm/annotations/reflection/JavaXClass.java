@@ -6,8 +6,6 @@ import java.lang.reflect.Modifier;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.GenerationType;
-
 public class JavaXClass extends JavaXAnnotatedElement implements XClass{
   private final TypeEnvironment context;
   private final Class clazz;
@@ -37,13 +35,23 @@ TypeEnvironment getTypeEnvironment() {
 }
 
 public XClass[] getInterfaces() {
-	// TODO Auto-generated method stub
-	return null;
+	Class[] classes = toClass().getInterfaces();
+	int length = classes.length;
+	XClass[] xClasses = new XClass[length];
+    if (length != 0) {
+        TypeEnvironment environment = CompoundTypeEnvironment.create(
+                getTypeEnvironment(),
+                getFactory().getTypeEnvironment( toClass() )
+                );
+        for ( int index = 0; index < length ; index++ ) {
+            xClasses[index] = getFactory().toXClass( classes[index], environment );
+        }
+    }
+    return xClasses;
 }
 
 public boolean isInterface() {
-	// TODO Auto-generated method stub
-	return false;
+	return toClass().isInterface();
 }
 
 public boolean isAbstract() {
@@ -51,18 +59,15 @@ public boolean isAbstract() {
 }
 
 public boolean isPrimitive() {
-	// TODO Auto-generated method stub
-	return false;
+	return toClass().isPrimitive();
 }
 
 public boolean isEnum() {
-	// TODO Auto-generated method stub
-	return false;
+	return toClass().isEnum();
 }
 
 public boolean isAssignableFrom(XClass c) {
-	// TODO Auto-generated method stub
-	return false;
+	return toClass().isAssignableFrom( ( (JavaXClass) c ).toClass() );
 }
 
 public List<XProperty> getDeclaredProperties(String accessType) {
@@ -103,7 +108,6 @@ private List<XProperty> getDeclaredFieldProperties(Filter filter) {
 }
 
 public List<XMethod> getDeclaredMethods() {
-	// TODO Auto-generated method stub
 	return null;
 }
 }

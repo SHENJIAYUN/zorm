@@ -15,7 +15,7 @@ import com.zorm.session.SessionFactoryImplementor;
 import com.zorm.session.SessionImplementor;
 
 public final class EntityEntry implements Serializable{
-
+	private static final long serialVersionUID = 5415219042819723381L;
 	private LockMode lockMode;
 	private Status status;
 	private Status previousStatus;
@@ -68,10 +68,6 @@ public final class EntityEntry implements Serializable{
 		this.persistenceContext = persistenceContext;
 	}
 
-	/**
-	 * This for is used during custom deserialization handling
-	 */
-	@SuppressWarnings( {"JavaDoc", "unused"})
 	private EntityEntry(
 			final SessionFactoryImplementor factory,
 			final String entityName,

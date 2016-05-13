@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import com.zorm.annotations.OneToMany;
 
 @Entity
-@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS) 
+//@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS) 
 //@DiscriminatorColumn(name="discriminator")
 //@DiscriminatorValue("user")
 @Table(name="users",catalog="orm" )
@@ -31,7 +31,7 @@ public class User implements Serializable{
     public User() {}
 
     @Id
-	@Column(name="id")
+	@Column(name="user_id")
 	public Integer getId() {
 		return id;
 	}
@@ -40,7 +40,7 @@ public class User implements Serializable{
 		this.id = id;
 	}
 
-	@Column(name="name",length=10)
+	@Column(name="user_name",length=10)
 	public String getName() {
 		return name;
 	}

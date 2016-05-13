@@ -8,18 +8,17 @@ import com.zorm.event.EventListenerGroup;
 import com.zorm.event.EventType;
 import com.zorm.event.PostDeleteEvent;
 import com.zorm.event.PostDeleteEventListener;
-import com.zorm.event.PreDeleteEventListener;
 import com.zorm.exception.AssertionFailure;
 import com.zorm.exception.ZormException;
 import com.zorm.persister.entity.EntityPersister;
 import com.zorm.session.SessionImplementor;
 
 public final class EntityDeleteAction extends EntityAction {
+	private static final long serialVersionUID = 6728466386471231854L;
+	
 	private final Object version;
 	private final boolean isCascadeDeleteEnabled;
 	private final Object[] state;
-
-	private Object[] naturalIdValues;
 
 	public EntityDeleteAction(
 			final Serializable id,
@@ -34,12 +33,6 @@ public final class EntityDeleteAction extends EntityAction {
 		this.isCascadeDeleteEnabled = isCascadeDeleteEnabled;
 		this.state = state;
 
-		// before remove we need to remove the local (transactional) natural id cross-reference
-//		naturalIdValues = session.getPersistenceContext().getNaturalIdHelper().removeLocalNaturalIdCrossReference(
-//				getPersister(),
-//				getId(),
-//				state
-//		);
 	}
 
 	@Override
@@ -53,9 +46,6 @@ public final class EntityDeleteAction extends EntityAction {
 
 		Object version = this.version;
 		if ( persister.isVersionPropertyGenerated() ) {
-			// we need to grab the version value from the entity, otherwise
-			// we have issues with generated-version entities that may have
-			// multiple actions queued during the same flush
 			version = persister.getVersion( instance );
 		}
 
@@ -63,10 +53,6 @@ public final class EntityDeleteAction extends EntityAction {
 			persister.delete( id, version, instance, session );
 		}
 		
-		//postDelete:
-		// After actually deleting a row, record the fact that the instance no longer 
-		// exists on the database (needed for identity-column key generation), and
-		// remove it from the session cache
 		final PersistenceContext persistenceContext = session.getPersistenceContext();
 		EntityEntry entry = persistenceContext.removeEntry( instance );
 		if ( entry == null ) {
@@ -75,9 +61,6 @@ public final class EntityDeleteAction extends EntityAction {
 		entry.postDelete();
 
 		persistenceContext.removeEntity( entry.getEntityKey() );
-		//persistenceContext.removeProxy( entry.getEntityKey() );
-		
-		//persistenceContext.getNaturalIdHelper().removeSharedNaturalIdCrossReference( persister, id, naturalIdValues );
 
 		postDelete();
 
@@ -87,16 +70,7 @@ public final class EntityDeleteAction extends EntityAction {
 	}
 
 	private boolean preDelete() {
-		boolean veto = false;
-//		EventListenerGroup<PreDeleteEventListener> listenerGroup = listenerGroup( EventType.PRE_DELETE );
-//		if ( listenerGroup.isEmpty() ) {
-//			return veto;
-//		}
-//		final PreDeleteEvent event = new PreDeleteEvent( getInstance(), getId(), state, getPersister(), eventSource() );
-//		for ( PreDeleteEventListener listener : listenerGroup.listeners() ) {
-//			veto |= listener.onPreDelete( event );
-//		}
-		return veto;
+		return false;
 	}
 
 	private void postDelete() {

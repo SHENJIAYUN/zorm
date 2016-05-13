@@ -279,9 +279,19 @@ public class App {
 	}
 
 	public static void main(String[] args) throws DocumentException,SAXException {
-		List<User> users = findUsers();
-		for(User user : users){
-			System.out.println("["+user.getId()+","+user.getName()+"]");
+		User user = new User();
+		user.setId((int)(Math.random()*100+1));
+		user.setName("JIA");
+		
+		Session session = SessionUtil.getSession();
+		Transaction tx = null;
+		try{
+			tx = session.beginTransaction();
+			session.save(user);
+			tx.commit();
+		}catch(Exception e){
+			e.printStackTrace();
+			tx.rollback();
 		}
 	}
 }

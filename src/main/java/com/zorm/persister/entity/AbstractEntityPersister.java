@@ -1401,12 +1401,6 @@ public abstract class AbstractEntityPersister implements OuterJoinLoadable,
 				&& isAllOrDirtyOptLocking();
 		Object[] loadedState = null;
 		if (isImpliedOptimisticLocking) {
-			// need to treat this as if it where optimistic-lock="all" (dirty
-			// does *not* make sense);
-			// first we need to locate the "loaded" state
-			//
-			// Note, it potentially could be a proxy, so
-			// doAfterTransactionCompletion the location the safe way...
 			final EntityKey key = session.generateEntityKey(id, this);
 			Object entity = session.getPersistenceContext().getEntity(key);
 			if (entity != null) {
@@ -1418,10 +1412,8 @@ public abstract class AbstractEntityPersister implements OuterJoinLoadable,
 
 		final String[] deleteStrings;
 		if (isImpliedOptimisticLocking && loadedState != null) {
-			// we need to utilize dynamic delete statements
 			deleteStrings = generateSQLDeletStrings(loadedState);
 		} else {
-			// otherwise, utilize the static delete statements
 			deleteStrings = getSQLDeleteStrings();
 		}
 
