@@ -8,8 +8,11 @@ import java.util.Map;
 import com.zorm.util.JoinedIterator;
 import com.zorm.util.SingletonIterator;
 
+@SuppressWarnings("unused")
 public class Subclass extends PersistentClass{
 
+	private static final long serialVersionUID = 2716807833871599581L;
+	
 	private PersistentClass superclass;
 	private Class classPersisterClass;
 	private final int subclassId;
@@ -117,7 +120,6 @@ public class Subclass extends PersistentClass{
 
 	@Override
 	public boolean hasIdentifierProperty() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -144,7 +146,7 @@ public class Subclass extends PersistentClass{
 	}
 
 	@Override
-	int nextSubclassId() {
+	public int nextSubclassId() {
 		return getSuperclass().nextSubclassId();
 	}
 
@@ -163,7 +165,6 @@ public class Subclass extends PersistentClass{
 
 	@Override
 	public String getWhere() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -191,7 +192,6 @@ public class Subclass extends PersistentClass{
 
 	@Override
 	public boolean isExplicitPolymorphism() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -204,14 +204,12 @@ public class Subclass extends PersistentClass{
 
 	@Override
 	public int getOptimisticLockMode() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 
 	@Override
 	public Class getEntityPersisterClass() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

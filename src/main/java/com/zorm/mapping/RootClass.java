@@ -207,9 +207,10 @@ public class RootClass extends PersistentClass implements TableOwner {
 	}
 	
 	@Override
-	int nextSubclassId() {
+	public int nextSubclassId() {
 		return ++nextSubclassId;
 	}
+	
 	@Override
 	public RootClass getRootClass() {
 		return this;

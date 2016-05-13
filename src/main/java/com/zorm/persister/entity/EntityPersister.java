@@ -10,7 +10,6 @@ import com.zorm.engine.ValueInclusion;
 import com.zorm.entity.EntityInstrumentationMetadata;
 import com.zorm.entity.EntityMetamodel;
 import com.zorm.entity.EntityMode;
-import com.zorm.event.EventSource;
 import com.zorm.exception.MappingException;
 import com.zorm.exception.ZormException;
 import com.zorm.id.IdentifierGenerator;
@@ -159,8 +158,6 @@ public interface EntityPersister extends OptimisticCacheSource {
 	 */
 	public void afterInitialize(Object entity,
 			boolean lazyPropertiesAreUnfetched, SessionImplementor session);
-
-	// public void afterReassociate(Object entity, SessionImplementor session);
 
 	public Boolean isTransient(Object object, SessionImplementor session)
 			throws ZormException;

@@ -19,6 +19,7 @@ import com.zorm.util.ReflectHelper;
 import com.zorm.util.SingletonIterator;
 import com.zorm.util.StringHelper;
 
+@SuppressWarnings("unused")
 public abstract class PersistentClass implements Serializable,Filterable,MetaAttributable{
 
   private static final long serialVersionUID = -1121438697942700316L;
@@ -49,7 +50,6 @@ public abstract class PersistentClass implements Serializable,Filterable,MetaAtt
   protected final java.util.Set synchronizedTables = new HashSet();
   private String loaderName;
   private Boolean isAbstract;
-  @SuppressWarnings("unused")
   private MappedSuperclass superMappedSuperclass;
   
   //Custom SQL
@@ -61,11 +61,9 @@ public abstract class PersistentClass implements Serializable,Filterable,MetaAtt
 	private ExecuteUpdateResultCheckStyle updateCheckStyle;
 	private String customSQLDelete;
 	private boolean customDeleteCallable;
-	private ExecuteUpdateResultCheckStyle deleteCheckStyle;
-	
+	private ExecuteUpdateResultCheckStyle deleteCheckStyle;	
 	private String temporaryIdTableName;
 	private String temporaryIdTableDDL;
-	
 	private java.util.Map tuplizerImpls;
 	protected int optimisticLockMode;
 
@@ -78,6 +76,24 @@ public abstract class PersistentClass implements Serializable,Filterable,MetaAtt
 	public abstract boolean hasIdentifierProperty() ;
 	public abstract Property getIdentifierProperty() ;
 	public abstract Iterator getPropertyClosureIterator();
+    public abstract Value getDiscriminator() ;
+	public abstract boolean isDiscriminatorInsertable();
+	public abstract Table getTable();
+	public abstract boolean isInherited() ;
+	public abstract int nextSubclassId();
+	public abstract Table getRootTable();
+	public abstract RootClass getRootClass() ;
+	public abstract String getWhere() ;
+	public abstract boolean isVersioned() ;
+	public abstract boolean isPolymorphic();
+	public abstract boolean isExplicitPolymorphism() ;
+	public abstract PersistentClass getSuperclass();
+	public abstract boolean isJoinedSubclass() ;
+	public abstract Property getVersion();
+	public abstract Class getEntityPersisterClass();
+	public abstract boolean hasEmbeddedIdentifier() ;
+	public abstract boolean isMutable() ;
+	public abstract  int getOptimisticLockMode();
 	
 	public void setOptimisticLockMode(int optimisticLockMode) {
 		this.optimisticLockMode = optimisticLockMode;
@@ -111,9 +127,6 @@ public abstract class PersistentClass implements Serializable,Filterable,MetaAtt
 		this.entityName = entityName==null ? null : entityName.intern();
 	}
 
-	public abstract Value getDiscriminator() ;
-	
-	public abstract boolean isDiscriminatorInsertable();
 
 	public void setDiscriminatorValue(String discriminatorValue) {
  		this.discriminatorValue = discriminatorValue;
@@ -135,7 +148,7 @@ public abstract class PersistentClass implements Serializable,Filterable,MetaAtt
 		this.dynamicUpdate = dynamicUpdate;
 	}
 
-	public abstract Table getTable();
+	
 
 	public Boolean isAbstract() {
 		return isAbstract;
@@ -166,33 +179,12 @@ public abstract class PersistentClass implements Serializable,Filterable,MetaAtt
 				if ( property == null ) {
 					Property identifierProperty = getIdentifierProperty();
 					if ( identifierProperty != null && identifierProperty.getName().equals( element ) ) {
-						// we have a mapped identifier property and the root of
-						// the incoming property path matched that identifier
-						// property
 						property = identifierProperty;
-					}
-					else if ( identifierProperty == null && getIdentifierMapper() != null ) {
-						// we have an embedded composite identifier
-						try {
-//							identifierProperty = getProperty( element, getIdentifierMapper().getPropertyIterator() );
-//							if ( identifierProperty != null ) {
-//								// the root of the incoming property path matched one
-//								// of the embedded composite identifier properties
-//								property = identifierProperty;
-//							}
-						}
-						catch( MappingException ignore ) {
-							// ignore it...
-						}
 					}
 
 					if ( property == null ) {
 						property = getProperty( element, iter );
 					}
-				}
-				else {
-					//flat recursive algorithm
-					//property = ( ( Component ) property.getValue() ).getProperty( element );
 				}
 			}
 		}
@@ -203,9 +195,6 @@ public abstract class PersistentClass implements Serializable,Filterable,MetaAtt
 		return property;
 	}
 	
-	private Object getIdentifierMapper() {
-		return null;
-	}
 	
 	public Iterator getPropertyIterator() {
 		ArrayList iterators = new ArrayList();
@@ -277,17 +266,12 @@ public abstract class PersistentClass implements Serializable,Filterable,MetaAtt
         return new JoinedIterator(iterators);
 	}
 
-	public abstract boolean isInherited() ;
-
-	abstract int nextSubclassId();
+	
 
 	public Table getIdentityTable() {
 		return getRootTable();
 	}
 
-	public abstract Table getRootTable();
-
-	public abstract RootClass getRootClass() ;
 
 	public Class getMappedClass() throws MappingException{
         if(className==null) return null;
@@ -349,9 +333,6 @@ public abstract class PersistentClass implements Serializable,Filterable,MetaAtt
 		return loaderName;
 	}
 
-	public abstract String getWhere() ;
-
-	public abstract boolean isVersioned() ;
 
 	public Iterator getSubclassPropertyClosureIterator() {
 		ArrayList iters = new ArrayList();
@@ -438,7 +419,6 @@ public abstract class PersistentClass implements Serializable,Filterable,MetaAtt
 		return joins.iterator();
 	}
 
-	public abstract boolean isPolymorphic();
 
 	public int getJoinNumber(Property prop) {
 		return 0;
@@ -453,9 +433,6 @@ public abstract class PersistentClass implements Serializable,Filterable,MetaAtt
 		return n;
 	}
 
-	public abstract Property getVersion();
-
-	public abstract boolean hasEmbeddedIdentifier() ;
 
 	public boolean hasPojoRepresentation() {
 		return getClassName()!=null;
@@ -470,7 +447,7 @@ public abstract class PersistentClass implements Serializable,Filterable,MetaAtt
 		return span;
 	}
 
-	public abstract boolean isMutable() ;
+	
 
 	public boolean isLazy() {
 		return lazy;
@@ -488,22 +465,19 @@ public abstract class PersistentClass implements Serializable,Filterable,MetaAtt
 		return dynamicInsert;
 	}
 
-	public abstract boolean isExplicitPolymorphism() ;
-
-	public abstract PersistentClass getSuperclass();
+	
 
 	public boolean hasSubclasses() {
 		return subclasses.size() > 0;
 	}
 
-	public abstract  int getOptimisticLockMode();
+	
 
 	public String getTuplizerImplClassName(EntityMode mode) {
 		if ( tuplizerImpls == null ) return null;
 		return ( String ) tuplizerImpls.get( mode );
 	}
 
-	public abstract Class getEntityPersisterClass();
 
 	public Iterator getDirectSubclasses() {
 		return subclasses.iterator();
@@ -589,5 +563,5 @@ public abstract class PersistentClass implements Serializable,Filterable,MetaAtt
 	public String getNodeName() {
 		return nodeName;
 	}
-	public abstract boolean isJoinedSubclass() ;
+	
 }

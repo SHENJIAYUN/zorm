@@ -72,9 +72,7 @@ public abstract class AbstractEntityPersister implements OuterJoinLoadable,
 
 	public static final String ENTITY_CLASS = "class";
 
-	// moved up from AbstractEntityPersister ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	private final SessionFactoryImplementor factory;
-	// private final boolean isLazyPropertiesCacheable;
 	private final EntityMetamodel entityMetamodel;
 	private final EntityTuplizer entityTuplizer;
 	private InsertGeneratedIdentifierDelegate identityDelegate;
@@ -89,14 +87,12 @@ public abstract class AbstractEntityPersister implements OuterJoinLoadable,
 	private final String[] rootTableKeyColumnReaderTemplates;
 	private final String[] identifierAliases;
 	private final int identifierColumnSpan;
-	// private final String versionColumnName;
 	private final boolean hasFormulaProperties;
 	private final int batchSize;
 	protected final String rowIdName;
 	private final String versionColumnName;
 	private final Set lazyProperties;
 
-	// The optional SQL string defined in the where attribute
 	private final String sqlWhereString;
 	private final String sqlWhereStringTemplate;
 
