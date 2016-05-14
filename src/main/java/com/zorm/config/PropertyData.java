@@ -38,7 +38,7 @@ public interface PropertyData {
 	String getTypeName() throws MappingException;
 	
 	/**
-	 * Return the Hibernate mapping property
+	 * Return the mapping property
 	 */
 	XProperty getProperty();
 	

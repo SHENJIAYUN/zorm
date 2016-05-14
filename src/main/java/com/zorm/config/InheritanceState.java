@@ -152,6 +152,7 @@ public ElementsToProcess getElementsToProcess() {
 	    int idPropertyCount = 0;
 	    
 	    for(int i = 0;i<deep;i++){
+	    	// 构造函数中会获取实体类的所有属性
 	    	PropertyContainer propertyContainer = new PropertyContainer(classesToProcessForMappedSuperclass.get(i), clazz);
 	    	int currentIdPropertyCount = AnnotationBinder.addElementsOfClass(
 					elements, accessType, propertyContainer, mappings

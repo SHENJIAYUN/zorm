@@ -26,11 +26,8 @@ public class PropertyContainer {
 	    }
 
 		private final AccessType explicitClassDefinedAccessType;
-
 		private final TreeMap<String, XProperty> fieldAccessMap;
-
 		private final TreeMap<String, XProperty> propertyAccessMap;
-
 		private final XClass xClass;
 		private final XClass entityAtStake;
 
@@ -40,7 +37,7 @@ public class PropertyContainer {
 
 			explicitClassDefinedAccessType = determineClassDefinedAccessStrategy();
 
-			// 获取clazz的所有属性
+			// 获取实体类的所有属性
 			fieldAccessMap = initProperties( AccessType.FIELD );
 			propertyAccessMap = initProperties( AccessType.PROPERTY );
 

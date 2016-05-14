@@ -811,7 +811,7 @@ public final class AnnotationBinder {
 			Mappings mappings) {
 		int idPropertyCounter = 0;
 		AccessType accessType = defaultAccessType;
-
+        //获取实体类的属性集合
 		Collection<XProperty> properties = propertyContainer.getProperties( accessType );
 		for ( XProperty p : properties ) {
 			final int currentIdPropertyCounter = addProperty(propertyContainer, p, elements, 
