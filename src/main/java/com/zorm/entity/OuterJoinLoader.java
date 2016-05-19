@@ -8,6 +8,7 @@ import com.zorm.persister.entity.Loadable;
 import com.zorm.session.SessionFactoryImplementor;
 import com.zorm.type.EntityType;
 
+@SuppressWarnings("unused")
 public abstract class OuterJoinLoader extends BasicLoader{
 	protected Loadable[] persisters;
 	private LockOptions lockOptions;

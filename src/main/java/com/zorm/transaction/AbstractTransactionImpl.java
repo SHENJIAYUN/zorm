@@ -5,12 +5,12 @@ import javax.transaction.Status;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.zorm.engine.transaction.spi.JoinStatus;
-import com.zorm.engine.transaction.spi.LocalStatus;
-import com.zorm.engine.transaction.spi.TransactionImplementor;
+import com.zorm.engine.JoinStatus;
+import com.zorm.engine.LocalStatus;
+import com.zorm.engine.TransactionImplementor;
 import com.zorm.exception.TransactionException;
 import com.zorm.exception.ZormException;
-import com.zorm.service.jta.platform.spi.JtaPlatform;
+import com.zorm.service.JtaPlatform;
 
 public abstract class AbstractTransactionImpl implements TransactionImplementor{
 	
@@ -71,7 +71,7 @@ public abstract class AbstractTransactionImpl implements TransactionImplementor{
 	/**
 	 * Provide subclasses with convenient access to the configured {@link JtaPlatform}
 	 *
-	 * @return The {@link org.hibernate.service.jta.platform.spi.JtaPlatform}
+	 * @return The {@link com.zorm.service.hibernate.service.jta.platform.spi.JtaPlatform}
 	 */
 	protected JtaPlatform jtaPlatform() {
 		return transactionCoordinator().getTransactionContext().getTransactionEnvironment().getJtaPlatform();

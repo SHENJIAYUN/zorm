@@ -2,30 +2,26 @@ package com.jia;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Table;
 
+import com.zorm.annotations.ManyToMany;
 import com.zorm.annotations.OneToMany;
 
 @Entity
-//@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS) 
-//@DiscriminatorColumn(name="discriminator")
-//@DiscriminatorValue("user")
 @Table(name="users",catalog="orm" )
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
     private Integer id;
 	private String name;
-//	private Integer age;
-//	private String sex;
+	private Set<Role> roles;
 //	private Collection<Post> posts;
     
     public User() {}
@@ -40,7 +36,7 @@ public class User implements Serializable{
 		this.id = id;
 	}
 
-	@Column(name="user_name",length=10)
+	@Column(name="user_name")
 	public String getName() {
 		return name;
 	}
@@ -48,27 +44,21 @@ public class User implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-
-//	@Column(name="age")
-//	public Integer getAge() {
-//		return age;
-//	}
-//
-//	public void setAge(Integer age) {
-//		this.age = age;
-//	}
-//
-//	@Column(name="sex")
-//	public String getSex() {
-//		return sex;
-//	}
-//
-//	public void setSex(String sex) {
-//		this.sex = sex;
-//	}
 	
-	
+	@ManyToMany()
+	@JoinTable(
+			name="user_role",
+			joinColumns=@JoinColumn(name="user_id"),
+			inverseJoinColumns=@JoinColumn(name="role_id")
+			)
+	public Set<Role> getRoles() {
+		return roles;
+	}
 
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+	
 //	@OneToMany(mappedBy="user")
 //	public Collection<Post> getPosts() {
 //		return posts;
@@ -77,6 +67,6 @@ public class User implements Serializable{
 //	public void setPosts(Collection<Post> posts) {
 //		this.posts = posts;
 //	}
-    
+
 }
 

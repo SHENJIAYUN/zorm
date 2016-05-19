@@ -452,7 +452,6 @@ public class ActionQueue {
 		afterTransactionProcesses.afterTransactionCompletion( successful );
 	}
 
-	@SuppressWarnings("unchecked")
 	public void addAction(EntityUpdateAction entityUpdateAction) {
 		updates.add(entityUpdateAction);
 	}
@@ -461,22 +460,18 @@ public class ActionQueue {
 		registerCleanupActions( cleanupAction );
 	}
 
-	@SuppressWarnings("unchecked")
 	public void addAction(CollectionRecreateAction collectionRecreateAction) {
 		collectionCreations.add(collectionRecreateAction);
 	}
 
-	@SuppressWarnings({ "unchecked" })
 	public void addAction(CollectionUpdateAction action) {
 		collectionUpdates.add( action );
 	}
 
-	@SuppressWarnings("unchecked")
 	public void addAction(CollectionRemoveAction collectionRemoveAction) {
 		collectionRemovals.add(collectionRemoveAction);
 	}
 
-	@SuppressWarnings({ "unchecked" })
 	public void sortCollectionActions() {
 		if ( session.getFactory().getSettings().isOrderUpdatesEnabled() ) {
 			java.util.Collections.sort( collectionCreations );

@@ -379,10 +379,8 @@ public class JoinWalker {
 		final int collections = countCollectionPersisters(associations);
 
 		collectionOwners = collections == 0 ? null : new int[collections];
-		collectionPersisters = collections == 0 ? null
-				: new CollectionPersister[collections];
-		collectionSuffixes = BasicLoader.generateSuffixes(joins + 1,
-				collections);
+		collectionPersisters = collections == 0 ? null : new CollectionPersister[collections];
+		collectionSuffixes = BasicLoader.generateSuffixes(joins + 1, collections);
 
 		this.lockOptions = lockOptions;
 
@@ -408,18 +406,15 @@ public class JoinWalker {
 
 			} else {
 
-				QueryableCollection collPersister = (QueryableCollection) oj
-						.getJoinable();
-				if (oj.getJoinType() == JoinType.LEFT_OUTER_JOIN
-						&& !oj.hasRestriction()) {
+				QueryableCollection collPersister = (QueryableCollection) oj.getJoinable();
+				if (oj.getJoinType() == JoinType.LEFT_OUTER_JOIN && !oj.hasRestriction()) {
 					collectionPersisters[j] = collPersister;
 					collectionOwners[j] = oj.getOwner(associations);
 					j++;
 				}
 
 				if (collPersister.isOneToMany()) {
-					persisters[i] = (Loadable) collPersister
-							.getElementPersister();
+					persisters[i] = (Loadable) collPersister.getElementPersister();
 					aliases[i] = oj.getRHSAlias();
 					callback.associationProcessed(oj, i);
 					i++;
@@ -429,8 +424,7 @@ public class JoinWalker {
 
 		if (ArrayHelper.isAllNegative(owners))
 			owners = null;
-		if (collectionOwners != null
-				&& ArrayHelper.isAllNegative(collectionOwners)) {
+		if (collectionOwners != null && ArrayHelper.isAllNegative(collectionOwners)) {
 			collectionOwners = null;
 		}
 	}
@@ -510,8 +504,10 @@ public class JoinWalker {
 						: collectionSuffixes[collectionAliasCount];
 				final String selectFragment = joinable.selectFragment(
 						next == null ? null : next.getJoinable(),
-						next == null ? null : next.getRHSAlias(), join
-								.getRHSAlias(), entitySuffix, collectionSuffix,
+						next == null ? null : next.getRHSAlias(), 
+						join.getRHSAlias(), 
+						entitySuffix,
+						collectionSuffix,
 						join.getJoinType() == JoinType.LEFT_OUTER_JOIN);
 				if (selectFragment.trim().length() > 0) {
 					buf.append(", ").append(selectFragment);
@@ -593,8 +589,7 @@ public class JoinWalker {
 		while (iter.hasNext()) {
 			 OuterJoinableAssociation oj = (OuterJoinableAssociation)iter.next();
 			 if ( last != null && last.isManyToManyWith( oj ) ) {
-			   oj.addManyToManyJoin( outerjoin, ( QueryableCollection )
-			   last.getJoinable() );
+			   oj.addManyToManyJoin( outerjoin, ( QueryableCollection )last.getJoinable() );
 			 }
 			 else {
 			   oj.addJoins(outerjoin);
@@ -613,8 +608,7 @@ public class JoinWalker {
 
 	protected void initPersisters(final List associations,
 			final LockOptions lockOptions) throws MappingException {
-		initPersisters(associations, lockOptions,
-				AssociationInitCallback.NO_CALLBACK);
+		initPersisters(associations, lockOptions, AssociationInitCallback.NO_CALLBACK);
 	}
 
 	public Loadable[] getPersisters() {

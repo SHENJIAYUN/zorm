@@ -1,4 +1,4 @@
-package com.zorm.engine.transaction.spi;
+package com.zorm.engine;
 
 public enum JoinStatus {
 	NOT_JOINED,

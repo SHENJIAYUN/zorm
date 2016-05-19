@@ -1,12 +1,10 @@
-package com.zorm.service.jta.platform.spi;
+package com.zorm.service;
 
 import javax.transaction.Synchronization;
 import javax.transaction.SystemException;
 import javax.transaction.Transaction;
 import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
-
-import com.zorm.service.Service;
 
 public interface JtaPlatform extends Service{
 	/**

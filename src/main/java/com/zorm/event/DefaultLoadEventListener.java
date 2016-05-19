@@ -73,6 +73,8 @@ public class DefaultLoadEventListener implements LoadEventListener {
 		}
 		
 		entity = loadFromSecondLevelCache(event, persister, options);
+		
+		//直接从数据库中加载
 		if(entity == null){
 		    entity = loadFromDatasource(event, persister, keyToLoad, options);
 		}

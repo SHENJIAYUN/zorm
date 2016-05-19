@@ -3,7 +3,7 @@ package com.zorm.service;
 import java.util.Map;
 
 import com.zorm.config.Environment;
-import com.zorm.engine.transaction.spi.TransactionImplementor;
+import com.zorm.engine.TransactionImplementor;
 import com.zorm.exception.ZormException;
 import com.zorm.transaction.JdbcTransactionFactory;
 

@@ -19,7 +19,6 @@ import com.zorm.util.StringHelper;
 public class BasicCollectionJoinWalker extends CollectionJoinWalker {
 	private final QueryableCollection collectionPersister;
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public BasicCollectionJoinWalker(
 			QueryableCollection collectionPersister, 
 			int batchSize, 

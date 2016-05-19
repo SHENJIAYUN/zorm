@@ -2601,8 +2601,7 @@ public abstract class AbstractEntityPersister implements OuterJoinLoadable,
 				.appropriateExpectation(insertResultCheckStyles[j]);
 		final boolean useBatch = j == 0 && expectation.canBeBatched();
 		if (useBatch && inserBatchKey == null) {
-			inserBatchKey = new BasicBatchKey(getEntityName() + "#INSERT",
-					expectation);
+			inserBatchKey = new BasicBatchKey(getEntityName() + "#INSERT", expectation);
 		}
 
 		final boolean callable = isInsertCallable(j);
@@ -2610,11 +2609,13 @@ public abstract class AbstractEntityPersister implements OuterJoinLoadable,
 			final PreparedStatement insert;
 			if (useBatch) {
 				insert = session.getTransactionCoordinator()
-						.getJdbcCoordinator().getBatch(inserBatchKey)
+						.getJdbcCoordinator()
+						.getBatch(inserBatchKey)
 						.getBatchStatement(sql, callable);
 			} else {
 				insert = session.getTransactionCoordinator()
-						.getJdbcCoordinator().getStatementPreparer()
+						.getJdbcCoordinator()
+						.getStatementPreparer()
 						.prepareStatement(sql, callable);
 			}
 

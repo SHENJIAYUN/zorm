@@ -178,7 +178,6 @@ public abstract class AbstractFlushingEventListener implements Serializable{
 		source.getActionQueue().sortActions();
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void prepareEntityFlushes(EventSource session,PersistenceContext persistenceContext) {
 		log.debug( "Processing flush-time cascades" );
 		final Object anything = getAnything();

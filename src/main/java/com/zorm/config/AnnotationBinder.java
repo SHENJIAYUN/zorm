@@ -22,12 +22,14 @@ import javax.persistence.Id;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
 import javax.persistence.MapsId;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.PrimaryKeyJoinColumns;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -544,9 +546,42 @@ public final class AnnotationBinder {
 			PropertyData inferredData, 
 			String mappedBy) {
 		TableBinder associationTableBinder = new TableBinder();
-		JoinColumn[] annJoins = null;;
-		JoinColumn[] annInverseJoins = null;
-//		JoinTable assocTable = propertyHolder.getJoinTable( property );
+		JoinColumn[] annJoins;
+		JoinColumn[] annInverseJoins;
+		JoinTable assocTable = propertyHolder.getJoinTable( property );
+		
+		if(assocTable != null){
+			final String catalog = assocTable.catalog();
+			final String schema = assocTable.schema();
+			final String tableName = assocTable.name();
+			final UniqueConstraint[] uniqueConstraints = assocTable.uniqueConstraints();
+			final JoinColumn[] joins = assocTable.joinColumns();
+			final JoinColumn[] inverseJoins = assocTable.inverseJoinColumns();
+			
+			collectionBinder.setExplicitAssociationTable( true );
+			
+			if(!BinderHelper.isEmptyAnnotationValue(schema)){
+				associationTableBinder.setSchema(schema);
+			}
+			
+			if(!BinderHelper.isEmptyAnnotationValue(catalog)){
+				associationTableBinder.setCatalog(catalog);
+			}
+			
+			if(!BinderHelper.isEmptyAnnotationValue(tableName)){
+				associationTableBinder.setName(tableName);
+			}
+			
+			associationTableBinder.setUniqueConstraints(uniqueConstraints);
+			
+			annJoins = joins.length == 0 ? null : joins;
+			annInverseJoins = inverseJoins == null || inverseJoins.length == 0 ? null : inverseJoins;
+			
+		}
+		else{
+			annJoins = null;
+			annInverseJoins = null;
+		}
 		
 		Ejb3JoinColumn[] joinColumns = Ejb3JoinColumn.buildJoinTableJoinColumns(
 				annJoins,  entityBinder.getSecondaryTables(),propertyHolder, inferredData.getPropertyName(), mappedBy,

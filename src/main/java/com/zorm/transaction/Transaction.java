@@ -1,6 +1,6 @@
 package com.zorm.transaction;
 
-import com.zorm.engine.transaction.spi.LocalStatus;
+import com.zorm.engine.LocalStatus;
 
 public interface Transaction {
   public boolean isInitiator();

@@ -7,8 +7,6 @@ import javax.transaction.Transaction;
 import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
 
-import com.zorm.service.jta.platform.spi.JtaPlatform;
-
 public class NoJtaPlatform implements JtaPlatform {
 
 	@Override

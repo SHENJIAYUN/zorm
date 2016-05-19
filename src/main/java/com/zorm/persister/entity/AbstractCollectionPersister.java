@@ -11,8 +11,10 @@ import java.util.Map;
 
 import com.zorm.FetchMode;
 import com.zorm.FilterAliasGenerator;
+import com.zorm.collection.PersistentCollection;
 import com.zorm.config.Configuration;
 import com.zorm.dialect.Dialect;
+import com.zorm.engine.BasicBatchKey;
 import com.zorm.engine.ExecuteUpdateResultCheckStyle;
 import com.zorm.engine.LoadQueryInfluencers;
 import com.zorm.exception.AssertionFailure;
@@ -20,6 +22,8 @@ import com.zorm.exception.MappingException;
 import com.zorm.exception.QueryException;
 import com.zorm.exception.ZormException;
 import com.zorm.id.IdentifierGenerator;
+import com.zorm.jdbc.Expectation;
+import com.zorm.jdbc.Expectations;
 import com.zorm.jdbc.SqlExceptionHelper;
 import com.zorm.loader.CollectionInitializer;
 import com.zorm.mapping.Collection;
@@ -41,6 +45,7 @@ import com.zorm.sql.SimpleSelect;
 import com.zorm.type.CollectionType;
 import com.zorm.type.Type;
 import com.zorm.type.EntityType;
+import com.zorm.util.ArrayHelper;
 import com.zorm.util.FilterHelper;
 import com.zorm.util.MessageHelper;
 import com.zorm.util.StringHelper;
@@ -172,7 +177,6 @@ public abstract class AbstractCollectionPersister implements CollectionMetadata,
 	protected abstract CollectionInitializer createCollectionInitializer(LoadQueryInfluencers loadQueryInfluencers)
 			throws MappingException;
 
-	@SuppressWarnings("rawtypes")
 	public AbstractCollectionPersister(
 			final Collection collection,
 			final Configuration cfg,
@@ -492,6 +496,137 @@ public abstract class AbstractCollectionPersister implements CollectionMetadata,
 		initCollectionPropertyMap();
 	}
 	
+	private BasicBatchKey recreateBatchKey;
+	
+	@Override
+	public void recreate(
+			PersistentCollection collection, 
+			Serializable id,
+			SessionImplementor session) {
+		if(!isInverse && isRowInsertEnabled()){
+			try{
+				Iterator entries = collection.entries(this);
+				if(entries.hasNext()){
+					Expectation expectation = Expectations.appropriateExpectation( getInsertCheckStyle());
+				    collection.preInsert(this);
+				    int i = 0;
+				    int count = 0;
+				    while(entries.hasNext()){
+				    	final Object entry = entries.next();
+				    	if(collection.entryExists(entry,i)){
+				    		int offset = 1;
+				    		PreparedStatement st = null;
+				    		boolean callable = isInsertCallable();
+				    		boolean useBatch = expectation.canBeBatched();
+				    		String sql = getSQLInsertRowString();
+				    		
+				    		if(useBatch){
+				    			if ( recreateBatchKey == null ) {
+									recreateBatchKey = new BasicBatchKey(
+											getRole() + "#RECREATE",
+											expectation
+											);
+								}
+								st = session.getTransactionCoordinator()
+										.getJdbcCoordinator()
+										.getBatch( recreateBatchKey )
+										.getBatchStatement( sql, callable );
+				    		}
+				    		else{
+				    			st = session.getTransactionCoordinator()
+										.getJdbcCoordinator()
+										.getStatementPreparer()
+										.prepareStatement( sql, callable );
+				    		}
+				    		
+				    		try{
+				    			offset += expectation.prepare(st);
+				    			
+				    			int loc = writeKey(st, id, offset, session);
+				    			
+				    			if ( hasIdentifier ) {
+									loc = writeIdentifier( st, collection.getIdentifier( entry, i ), loc, session );
+								}
+				    			
+				    			loc = writeElement(st,collection.getElement(entry),loc,session);
+				    		
+				    		    if(useBatch){
+				    		    	session.getTransactionCoordinator()
+									    .getJdbcCoordinator()
+									    .getBatch( recreateBatchKey )
+									    .addToBatch();
+				    		    }else{
+				    		    	expectation.verifyOutcome( st.executeUpdate(), st, -1 );
+				    		    }
+				    		    collection.afterRowInsert( this, entry, i );
+				    		    count++;
+				    		}
+				    		catch ( SQLException sqle ) {
+								if ( useBatch ) {
+									session.getTransactionCoordinator().getJdbcCoordinator().abortBatch();
+								}
+								throw sqle;
+							}
+							finally {
+								if ( !useBatch ) {
+									st.close();
+								}
+							}
+				    	}
+				    	i++;
+				    }
+				}
+			}
+			catch ( SQLException sqle ) {
+				throw sqlExceptionHelper.convert(
+						sqle,
+						"could not insert collection: " +
+								MessageHelper.collectionInfoString( this, collection, id, session ),
+						getSQLInsertRowString()
+						);
+			}
+		}
+	}
+	
+	protected int writeElement(PreparedStatement st, Object elt, int i, SessionImplementor session)
+			throws ZormException, SQLException {
+		getElementType().nullSafeSet( st, elt, i, elementColumnIsSettable, session );
+		return i + ArrayHelper.countTrue( elementColumnIsSettable );
+
+	}
+	
+	protected int writeKey(PreparedStatement st, Serializable key, int i, SessionImplementor session)
+			throws ZormException, SQLException {
+
+		if ( key == null ) {
+			throw new NullPointerException( "null key for collection: " + role ); // an assertion
+		}
+		getKeyType().nullSafeSet( st, key, i, session );
+		return i + keyColumnAliases.length;
+	}
+	
+	public int writeIdentifier(PreparedStatement st, Object id, int i, SessionImplementor session)
+			throws ZormException, SQLException {
+
+		getIdentifierType().nullSafeSet( st, id, i, session );
+		return i + 1;
+	}
+	
+	public Type getIdentifierType() {
+		return identifierType;
+	}
+	
+	protected String getSQLInsertRowString() {
+		return sqlInsertRowString;
+	}
+	
+	protected boolean isInsertCallable() {
+		return insertCallable;
+	}
+	
+	protected ExecuteUpdateResultCheckStyle getInsertCheckStyle() {
+		return insertCheckStyle;
+	}
 	
 	public boolean isArray() {
 		return isArray;

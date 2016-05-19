@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.zorm.config.AvailableSettings;
 import com.zorm.config.Environment;
-import com.zorm.service.jta.platform.spi.JtaPlatform;
 
 public class JtaPlatformInitiator implements BasicServiceInitiator<JtaPlatform> {
 	public static final JtaPlatformInitiator INSTANCE = new JtaPlatformInitiator();

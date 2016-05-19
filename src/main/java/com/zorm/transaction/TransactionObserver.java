@@ -1,6 +1,6 @@
 package com.zorm.transaction;
 
-import com.zorm.engine.transaction.spi.TransactionImplementor;
+import com.zorm.engine.TransactionImplementor;
 
 public interface TransactionObserver {
 	/**

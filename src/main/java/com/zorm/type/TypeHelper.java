@@ -1,7 +1,5 @@
-package com.zorm.typet;
+package com.zorm.type;
 
-import com.zorm.type.BasicType;
-import com.zorm.type.Type;
 
 public interface TypeHelper {
 	public BasicType basic(String name);

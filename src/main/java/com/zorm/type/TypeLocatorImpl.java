@@ -1,6 +1,5 @@
 package com.zorm.type;
 
-import com.zorm.typet.TypeHelper;
 
 public class TypeLocatorImpl implements TypeHelper {
 

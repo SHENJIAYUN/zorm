@@ -122,8 +122,7 @@ public final class Cascade {
 			final CascadeStyle style,
 			final Object anything,
 			final CollectionType type) {
-		CollectionPersister persister = eventSource.getFactory()
-				.getCollectionPersister( type.getRole() );
+		CollectionPersister persister = eventSource.getFactory().getCollectionPersister( type.getRole() );
 		Type elemType = persister.getElementType();
 
 		final int oldCascadeTo = cascadeTo;
@@ -146,7 +145,6 @@ public final class Cascade {
 		cascadeTo = oldCascadeTo;
 	}
 	
-	@SuppressWarnings("rawtypes")
 	private void cascadeCollectionElements(
 			final Object parent,
 			final Object child,

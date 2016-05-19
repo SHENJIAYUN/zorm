@@ -49,7 +49,6 @@ public abstract class Loader {
 		this.factory = factory;
 	}
 
-	@SuppressWarnings("rawtypes")
 	protected final List loadEntity(final SessionImplementor session,
 			final Object id, final Type identifierType,
 			final Object optionalObject, final String optionalEntityName,
@@ -79,14 +78,12 @@ public abstract class Loader {
 				returnProxies, null);
 	}
 
-	@SuppressWarnings("rawtypes")
 	private List doQueryAndInitializeNonLazyCollections(
 			final SessionImplementor session,
 			final QueryParameters queryParameters, final boolean returnProxies,
 			final ResultTransformer forcedResultTransformer)
 			throws SQLException {
-		final PersistenceContext persistenceContext = session
-				.getPersistenceContext();
+		final PersistenceContext persistenceContext = session.getPersistenceContext();
 		boolean defaultReadOnlyOrig = persistenceContext.isDefaultReadOnly();
 		if (queryParameters.isReadOnlyInitialized()) {
 			persistenceContext.setDefaultReadOnly(queryParameters.isReadOnly());
@@ -97,8 +94,7 @@ public abstract class Loader {
 		List result;
 		try {
 			try {
-				result = doQuery(session, queryParameters, returnProxies,
-						forcedResultTransformer);
+				result = doQuery(session, queryParameters, returnProxies,forcedResultTransformer);
 			} finally {
 				persistenceContext.afterLoad();
 			}
@@ -109,8 +105,7 @@ public abstract class Loader {
 	}
 
 	protected static interface AfterLoadAction {
-		public void afterLoad(SessionImplementor session, Object entity,
-				Loadable persister);
+		public void afterLoad(SessionImplementor session, Object entity, Loadable persister);
 	}
 
 	protected abstract String getSQLString();
@@ -119,8 +114,7 @@ public abstract class Loader {
 			final QueryParameters queryParameters, final boolean scroll,
 			List<AfterLoadAction> afterLoadActions,
 			final SessionImplementor session) throws SQLException {
-		return executeQueryStatement(getSQLString(), queryParameters, scroll,
-				afterLoadActions, session);
+		return executeQueryStatement(getSQLString(), queryParameters, scroll, afterLoadActions, session);
 	}
 
 	protected ResultSet executeQueryStatement(final String sqlStatement,
@@ -128,18 +122,14 @@ public abstract class Loader {
 			List<AfterLoadAction> afterLoadActions,
 			final SessionImplementor session) throws SQLException {
 
-		// Processing query filters.
 		queryParameters.processFilters(getSQLString(), session);
 
-		// Applying LIMIT clause.
 		final LimitHandler limitHandler = getLimitHandler(
 				queryParameters.getFilteredSQL(),
 				queryParameters.getRowSelection());
 		String sql = limitHandler.getProcessedSql();
 
-		// Adding locks and comments.
-		sql = preprocessSQL(sql, queryParameters, getFactory().getDialect(),
-				afterLoadActions);
+		sql = preprocessSQL(sql, queryParameters, getFactory().getDialect(), afterLoadActions);
 
 		final PreparedStatement st = prepareQueryStatement(sql,
 				queryParameters, limitHandler, scroll, session);
@@ -382,8 +372,7 @@ public abstract class Loader {
 		final int maxRows = LimitHelper.hasMaxRows(selection) ? selection
 				.getMaxRows() : Integer.MAX_VALUE;
 		final List<AfterLoadAction> afterLoadActions = new ArrayList<AfterLoadAction>();
-		final ResultSet rs = executeQueryStatement(queryParameters, false,
-				afterLoadActions, session);
+		final ResultSet rs = executeQueryStatement(queryParameters, false, afterLoadActions, session);
 		final Statement st = rs.getStatement();
 		try {
 			return processResultSet(rs, queryParameters, session,
@@ -400,26 +389,20 @@ public abstract class Loader {
 		return false;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected List processResultSet(ResultSet rs,
 			QueryParameters queryParameters, SessionImplementor session,
 			boolean returnProxies, ResultTransformer forcedResultTransformer,
 			int maxRows, List<AfterLoadAction> afterLoadActions)
 			throws SQLException {
 		final int entitySpan = getEntityPersisters().length;
-		final EntityKey optionalObjectKey = getOptionalObjectKey(
-				queryParameters, session);
-		final LockMode[] lockModesArray = getLockModes(queryParameters
-				.getLockOptions());
+		final EntityKey optionalObjectKey = getOptionalObjectKey(queryParameters, session);
+		final LockMode[] lockModesArray = getLockModes(queryParameters.getLockOptions());
 		final boolean createSubselects = isSubselectLoadingEnabled();
-		final List subselectResultKeys = createSubselects ? new ArrayList()
-				: null;
-		final ArrayList hydratedObjects = entitySpan == 0 ? null
-				: new ArrayList(entitySpan * 10);
+		final List subselectResultKeys = createSubselects ? new ArrayList() : null;
+		final ArrayList hydratedObjects = entitySpan == 0 ? null : new ArrayList(entitySpan * 10);
 		final List results = new ArrayList();
 
-		EntityKey[] keys = new EntityKey[entitySpan]; // we can reuse it for
-														// each row
+		EntityKey[] keys = new EntityKey[entitySpan]; 
 		int count;
 		for (count = 0; count < maxRows && rs.next(); count++) {
 			Object result = getRowFromResultSet(rs, session, queryParameters,
@@ -432,8 +415,7 @@ public abstract class Loader {
 			}
 		}
 
-		initializeEntitiesAndCollections(hydratedObjects, rs, session,
-				queryParameters.isReadOnly(session), afterLoadActions);
+		initializeEntitiesAndCollections(hydratedObjects, rs, session, queryParameters.isReadOnly(session), afterLoadActions);
 		return results;
 
 	}
@@ -474,8 +456,7 @@ public abstract class Loader {
 		if (hydratedObjects != null) {
 			int hydratedObjectsSize = hydratedObjects.size();
 			for (int i = 0; i < hydratedObjectsSize; i++) {
-				TwoPhaseLoad.initializeEntity(hydratedObjects.get(i), readOnly,
-						session, pre, post);
+				TwoPhaseLoad.initializeEntity(hydratedObjects.get(i), readOnly, session, pre, post);
 			}
 		}
 
@@ -543,65 +524,7 @@ public abstract class Loader {
 
 		for (int i = 0; i < numberOfPersistersToProcess; i++) {
 			final Type idType = persisters[i].getIdentifierType();
-			// if ( idType.isComponentType() &&
-			// getCompositeKeyManyToOneTargetIndices() != null ) {
-			// // we may need to force resolve any key-many-to-one(s)
-			// int[] keyManyToOneTargetIndices =
-			// getCompositeKeyManyToOneTargetIndices()[i];
-			// // todo : better solution is to order the index processing based
-			// on target indices
-			// // that would account for multiple levels whereas this scheme
-			// does not
-			// if ( keyManyToOneTargetIndices != null ) {
-			// for ( int targetIndex : keyManyToOneTargetIndices ) {
-			// if ( targetIndex < numberOfPersistersToProcess ) {
-			// final Type targetIdType =
-			// persisters[targetIndex].getIdentifierType();
-			// final Serializable targetId = (Serializable)
-			// targetIdType.resolve(
-			// hydratedKeyState[targetIndex],
-			// session,
-			// null
-			// );
-			// // todo : need a way to signal that this key is resolved and its
-			// data resolved
-			// keys[targetIndex] = session.generateEntityKey( targetId,
-			// persisters[targetIndex] );
-			// }
-			//
-			// // this part copied from #getRow, this section could be
-			// refactored out
-			// Object object = session.getEntityUsingInterceptor(
-			// keys[targetIndex] );
-			// if ( object != null ) {
-			// //its already loaded so don't need to hydrate it
-			// instanceAlreadyLoaded(
-			// resultSet,
-			// targetIndex,
-			// persisters[targetIndex],
-			// keys[targetIndex],
-			// object,
-			// lockModes[targetIndex],
-			// session
-			// );
-			// }
-			// else {
-			// instanceNotYetLoaded(
-			// resultSet,
-			// targetIndex,
-			// persisters[targetIndex],
-			// getEntityAliases()[targetIndex].getRowIdAlias(),
-			// keys[targetIndex],
-			// lockModes[targetIndex],
-			// getOptionalObjectKey( queryParameters, session ),
-			// queryParameters.getOptionalObject(),
-			// hydratedObjects,
-			// session
-			// );
-			// }
-			// }
-			// }
-			// }
+			
 			final Serializable resolvedId = (Serializable) idType.resolve(
 					hydratedKeyState[i], session, null);
 			keys[i] = resolvedId == null ? null : session.generateEntityKey(
@@ -609,7 +532,6 @@ public abstract class Loader {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
 	private Object getRowFromResultSet(final ResultSet resultSet,
 			final SessionImplementor session,
 			final QueryParameters queryParameters,
@@ -660,12 +582,10 @@ public abstract class Loader {
 				if (owner == null) {
 					key = null;
 				} else {
-					key = collectionPersister.getCollectionType()
-							.getKeyOfOwner(owner, session);
+					key = collectionPersister.getCollectionType().getKeyOfOwner(owner, session);
 				}
 
-				readCollectionElement(owner, key, collectionPersister,
-						descriptors[i], resultSet, session);
+				readCollectionElement(owner, key, collectionPersister,descriptors[i], resultSet, session);
 
 			}
 
@@ -705,10 +625,7 @@ public abstract class Loader {
 
 		} else if (optionalKey != null) {
 
-			persistenceContext.getLoadContexts().getCollectionLoadContext(rs)
-					.getLoadingCollection(persister, optionalKey); // handle
-																	// empty
-																	// collection
+			persistenceContext.getLoadContexts().getCollectionLoadContext(rs).getLoadingCollection(persister, optionalKey); 
 
 		}
 

@@ -15,7 +15,6 @@ import com.zorm.persister.entity.CollectionPersister;
 import com.zorm.session.SessionImplementor;
 import com.zorm.type.Type;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
 public class PersistentBag extends AbstractPersistentCollection implements List  {
 	private static final long serialVersionUID = 3674836702188248471L;
 	

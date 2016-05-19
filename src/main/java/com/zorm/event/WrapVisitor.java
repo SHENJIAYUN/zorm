@@ -52,11 +52,9 @@ public class WrapVisitor extends ProxyVisitor {
 		if (collection == null) {
 			return null;
 		} else {
-			CollectionPersister persister = session.getFactory()
-					.getCollectionPersister(collectionType.getRole());
+			CollectionPersister persister = session.getFactory().getCollectionPersister(collectionType.getRole());
 
-			final PersistenceContext persistenceContext = session
-					.getPersistenceContext();
+			final PersistenceContext persistenceContext = session.getPersistenceContext();
 			if (collectionType.hasHolder()) {
 
 				if (collection == CollectionType.UNFETCHED_COLLECTION)
@@ -72,10 +70,8 @@ public class WrapVisitor extends ProxyVisitor {
 				return null;
 			} else {
 
-				PersistentCollection persistentCollection = collectionType
-						.wrap(session, collection);
-				persistenceContext.addNewCollection(persister,
-						persistentCollection);
+				PersistentCollection persistentCollection = collectionType.wrap(session, collection);
+				persistenceContext.addNewCollection(persister, persistentCollection);
 
 				return persistentCollection; // Force a substitution!
 

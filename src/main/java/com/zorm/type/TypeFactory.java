@@ -1,6 +1,7 @@
 package com.zorm.type;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Properties;
 
 import com.zorm.exception.MappingException;
@@ -130,5 +131,17 @@ public final class TypeFactory implements Serializable{
 
 	public CollectionType array(String role, String propertyRef, Class elementClass) {
 		return new ArrayType( typeScope, role, propertyRef, elementClass );
+	}
+
+	public CollectionType sortedSet(String role, String propertyRef, Comparator comparator) {
+		return new SortedSetType( typeScope, role, propertyRef, comparator );
+	}
+
+	public CollectionType orderedSet(String role, String propertyRef) {
+		return new OrderedSetType( typeScope, role, propertyRef );
+	}
+
+	public CollectionType set(String role, String propertyRef) {
+		return new SetType( typeScope, role, propertyRef );
 	}
 }

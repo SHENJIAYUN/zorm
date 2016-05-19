@@ -7,13 +7,8 @@ import com.zorm.MultiTenancyStrategy;
 import com.zorm.entity.EntityMode;
 import com.zorm.entity.EntityTuplizerFactory;
 import com.zorm.query.QueryTranslatorFactory;
-import com.zorm.service.jta.platform.spi.JtaPlatform;
+import com.zorm.service.JtaPlatform;
 
-/**
- * Settings that affect the behaviour of Hibernate at runtime.
- *
- * @author Gavin King
- */
 public final class Settings {
 
 	private Integer maximumFetchDepth;
@@ -51,8 +46,6 @@ public final class Settings {
 	private boolean namedQueryStartupCheckingEnabled;
 	private boolean checkNullability;
 	private boolean initializeLazyStateOutsideTransactions;
-//	private ComponentTuplizerFactory componentTuplizerFactory; todo : HHH-3517 and HHH-1907
-//	private BytecodeProvider bytecodeProvider;
 	private String importFiles;
 	private JtaPlatform jtaPlatform;
 	private EntityMode defaultEntityMode;
@@ -62,9 +55,6 @@ public final class Settings {
 	private EntityTuplizerFactory entityTuplizerFactory;
 	private QueryTranslatorFactory queryTranslatorFactory;
 
-	/**
-	 * Package protected constructor
-	 */
 	Settings() {
 	}
 

@@ -1,4 +1,4 @@
-package com.jia;
+package com.zorm.util;
 
 import org.xml.sax.SAXException;
 
@@ -15,8 +15,7 @@ public class SessionUtil {
 		conf.configure();
 		ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
 				.applySetting(conf.getProperties()).buildServiceRegistry();
-		SessionFactory sessionFactory = conf
-				.buildSessionFactory(serviceRegistry);
+		SessionFactory sessionFactory = conf.buildSessionFactory(serviceRegistry);
 		Session session = sessionFactory.openSession();
 		return session;
 	}

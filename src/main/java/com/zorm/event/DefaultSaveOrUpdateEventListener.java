@@ -11,7 +11,6 @@ import com.zorm.entity.EntityEntry;
 import com.zorm.exception.AssertionFailure;
 import com.zorm.exception.PersistentObjectException;
 import com.zorm.exception.ZormException;
-import com.zorm.persister.entity.EntityPersister;
 import com.zorm.session.SessionFactoryImplementor;
 import com.zorm.session.SessionImplementor;
 import com.zorm.util.MessageHelper;

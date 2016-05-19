@@ -84,8 +84,6 @@ public final class TwoPhaseLoad {
 			final PostLoadEvent postLoadEvent) throws ZormException {
 		final PersistenceContext persistenceContext = session.getPersistenceContext();
 		final EntityEntry entityEntry = persistenceContext.getEntry(entity);
-		final EntityPersister persister = entityEntry.getPersister();
-		final Serializable id = entityEntry.getId();
 
 		doInitializeEntity( entity, entityEntry, readOnly, session, preLoadEvent, postLoadEvent );
 	}

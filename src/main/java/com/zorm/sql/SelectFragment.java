@@ -110,11 +110,6 @@ public class SelectFragment {
 		while ( iter.hasNext() ) {
 			String column = (String) iter.next();
 			String columnAlias = (String) columnAliasIter.next();
-			//TODO: eventually put this back in, once we think all is fixed
-			//Object otherAlias = columnsUnique.put(qualifiedColumn, columnAlias);
-			/*if ( otherAlias!=null && !columnAlias.equals(otherAlias) ) {
-				throw new AssertionFailure("bug in Hibernate SQL alias generation");
-			}*/
 			if ( columnsUnique.add(columnAlias) ) {
 				buf.append(", ")
 					.append(column)

@@ -15,9 +15,9 @@ import com.zorm.jdbc.ExtractedDatabaseMetaData;
 import com.zorm.jdbc.JdbcServices;
 import com.zorm.query.QueryTranslatorFactory;
 import com.zorm.service.ClassLoaderService;
+import com.zorm.service.JtaPlatform;
 import com.zorm.service.ServiceRegistry;
 import com.zorm.service.TransactionFactory;
-import com.zorm.service.jta.platform.spi.JtaPlatform;
 import com.zorm.util.ConfigurationHelper;
 import com.zorm.util.StringHelper;
 

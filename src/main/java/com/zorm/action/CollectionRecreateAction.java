@@ -23,6 +23,9 @@ public final class CollectionRecreateAction extends CollectionAction {
 	@Override
 	public void execute() throws ZormException {
 		final PersistentCollection collection = getCollection();
+		
+		getPersister().recreate( collection, getKey(), getSession() );
+		
 		getSession().getPersistenceContext().getCollectionEntry(collection).afterAction(collection);
 	}
 }

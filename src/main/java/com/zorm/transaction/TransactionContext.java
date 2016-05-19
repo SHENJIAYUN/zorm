@@ -3,7 +3,7 @@ package com.zorm.transaction;
 import java.io.Serializable;
 
 import com.zorm.ConnectionReleaseMode;
-import com.zorm.engine.transaction.spi.TransactionImplementor;
+import com.zorm.engine.TransactionImplementor;
 import com.zorm.jdbc.JdbcConnectionAccess;
 
 public interface TransactionContext extends Serializable {

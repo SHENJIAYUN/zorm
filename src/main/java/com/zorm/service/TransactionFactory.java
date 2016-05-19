@@ -1,7 +1,7 @@
 package com.zorm.service;
 
 import com.zorm.ConnectionReleaseMode;
-import com.zorm.engine.transaction.spi.TransactionImplementor;
+import com.zorm.engine.TransactionImplementor;
 import com.zorm.transaction.TransactionCoordinator;
 
 /*

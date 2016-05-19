@@ -147,7 +147,25 @@ public final class OuterJoinableAssociation {
 		return false;
 	}
 
-	public void addManyToManyJoin(JoinFragment outerjoin,QueryableCollection joinable2) {
+	public void addManyToManyJoin(JoinFragment outerjoin,QueryableCollection collection) {
+	   String manyToManyFilter = collection.getManyToManyFilterFragment(rhsAlias, enabledFilters);
+	   String condition = "".equals( manyToManyFilter )
+				? on
+				: "".equals( on )
+						? manyToManyFilter
+						: on + " and " + manyToManyFilter;
+	   outerjoin.addJoin(
+		        joinable.getTableName(),
+		        rhsAlias,
+		        lhsColumns,
+		        rhsColumns,
+		        joinType,
+		        condition
+		);
+		outerjoin.addJoins(
+			joinable.fromJoinFragment(rhsAlias, false, true),
+			joinable.whereJoinFragment(rhsAlias, false, true)
+		);
 	}
 
 	public void addJoins(JoinFragment outerjoin) throws MappingException {

@@ -23,6 +23,7 @@ import com.zorm.service.ServiceRegistryBuilder;
 import com.zorm.session.Session;
 import com.zorm.session.SessionFactory;
 import com.zorm.transaction.Transaction;
+import com.zorm.util.SessionUtil;
 
 /**
  * ZORM Test
@@ -282,6 +283,15 @@ public class App {
 		User user = new User();
 		user.setId((int)(Math.random()*100+1));
 		user.setName("JIA");
+		
+		List<Post> posts = new ArrayList<>();
+		Post post = new Post();
+		post.setPostId((int)(Math.random()*100+1));
+		post.setPostContent("post");
+		post.setUser(user);
+		posts.add(post);
+		
+//		user.setPosts(posts);
 		
 		Session session = SessionUtil.getSession();
 		Transaction tx = null;

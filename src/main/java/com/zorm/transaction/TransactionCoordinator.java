@@ -2,7 +2,7 @@ package com.zorm.transaction;
 
 import java.io.Serializable;
 
-import com.zorm.engine.transaction.spi.TransactionImplementor;
+import com.zorm.engine.TransactionImplementor;
 import com.zorm.jdbc.JdbcCoordinator;
 
 public interface TransactionCoordinator extends Serializable{

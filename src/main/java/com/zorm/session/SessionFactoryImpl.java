@@ -53,9 +53,9 @@ import com.zorm.transaction.TransactionCoordinatorImpl;
 import com.zorm.transaction.TransactionEnvironment;
 import com.zorm.transaction.TransactionEnvironmentImpl;
 import com.zorm.type.Type;
+import com.zorm.type.TypeHelper;
 import com.zorm.type.TypeLocatorImpl;
 import com.zorm.type.TypeResolver;
-import com.zorm.typet.TypeHelper;
 import com.zorm.type.AssociationType;
 import com.zorm.mapping.Collection;;
 

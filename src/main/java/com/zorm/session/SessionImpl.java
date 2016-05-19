@@ -24,7 +24,7 @@ import com.zorm.engine.LoadQueryInfluencers;
 import com.zorm.engine.NonFlushedChanges;
 import com.zorm.engine.PersistenceContext;
 import com.zorm.engine.StatefulPersistenceContext;
-import com.zorm.engine.transaction.spi.TransactionImplementor;
+import com.zorm.engine.TransactionImplementor;
 import com.zorm.entity.EntityEntry;
 import com.zorm.entity.EntityKey;
 import com.zorm.event.AutoFlushEvent;
@@ -611,6 +611,7 @@ public final class SessionImpl extends AbstractSessionImpl  implements EventSour
         //检查事务状态
         checkTransactionSynchStatus();
         checkNoUnresolvedActionsBeforeOperation();
+        
         for(SaveOrUpdateEventListener listener : listeners(EventType.SAVE)){
         	listener.onSaveOrUpdate(event);
         }

@@ -11,8 +11,10 @@
     <property name="dialect">  
         com.zorm.dialect.MySQLDialect  
     </property>  
-
+     
     <mapping class="com.jia.User"/> 
+    <mapping class="com.jia.Role"/>
+
     
   </session-factory>  
 </configuration> 

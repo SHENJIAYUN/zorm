@@ -60,4 +60,15 @@ public interface PersistentCollection {
 
 	public boolean endRead();
 
+	public Iterator entries(CollectionPersister persister);
+
+	public void preInsert(CollectionPersister persister);
+
+	public boolean entryExists(Object entry, int i);
+
+	public Object getIdentifier(Object entry, int i);
+
+	public Object getElement(Object entry);
+
+	public void afterRowInsert(CollectionPersister persister, Object entry, int i);
 }

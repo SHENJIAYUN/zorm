@@ -4,8 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 
+import com.zorm.annotations.ManyToMany;
 import com.zorm.annotations.ManyToOne;
 import com.zorm.annotations.OneToMany;
 import com.zorm.annotations.OneToOne;

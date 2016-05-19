@@ -83,10 +83,7 @@ public abstract class AbstractPersistentCollection implements Serializable, Pers
 	 * Is the initialized collection empty?
 	 */
 	public abstract boolean empty();
-
-	/**
-	 * Called by any read-only method of the collection interface
-	 */
+	
 	protected final void read() {
 		initialize( false );
 	}

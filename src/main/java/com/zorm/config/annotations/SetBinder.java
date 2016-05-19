@@ -14,6 +14,6 @@ public class SetBinder extends CollectionBinder {
 
 	@Override
 	protected Collection createCollection(PersistentClass persistentClass) {
-		return null;
+		return new com.zorm.mapping.Set(getMappings(),persistentClass);
 	}
 }

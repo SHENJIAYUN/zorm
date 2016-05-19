@@ -6,7 +6,7 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.FetchType.EAGER;
 
 import javax.persistence.FetchType;
 
@@ -17,5 +17,5 @@ public @interface ManyToMany {
 	Class targetEntity() default void.class;
 	CascadeType[] cascade() default {CascadeType.ALL};
 	String mappedBy() default "";
-	FetchType fetch() default LAZY;
+	FetchType fetch() default EAGER;
 }

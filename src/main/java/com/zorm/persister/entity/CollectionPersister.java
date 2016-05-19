@@ -33,7 +33,6 @@ public interface CollectionPersister {
 
 	public boolean isManyToMany();
 	
-	@SuppressWarnings("rawtypes")
 	public String getManyToManyFilterFragment(String alias, Map enabledFilters);
 	
 	public CollectionType getCollectionType();
@@ -71,5 +70,12 @@ public interface CollectionPersister {
 	public Object readKey(ResultSet rs, String[] keyAliases, SessionImplementor session) throws ZormException,SQLException;
 
 	public boolean isArray();
+	
+	public Type getIdentifierType();
+
+	public void recreate(
+			PersistentCollection collection,
+			Serializable key,
+            SessionImplementor session);
 
 }

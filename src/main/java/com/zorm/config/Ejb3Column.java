@@ -77,8 +77,11 @@ public class Ejb3Column {
 			actualCols = overriddenCols.length == 0 ? null : overriddenCols;
 		}
 		if (actualCols == null) {
-			columns = buildImplicitColumn(inferredData,
-					suffixForDefaultColumnName, propertyHolder, nullability,
+			columns = buildImplicitColumn(
+					inferredData,
+					suffixForDefaultColumnName, 
+					propertyHolder, 
+					nullability,
 					mappings);
 		} else {
 			final int length = actualCols.length;
@@ -206,9 +209,15 @@ public class Ejb3Column {
 		log.debug("Binding column:" + toString());
 	}
 
-	protected void initMappingColumn(String logicalColumnName,
-			String propertyName, int length, int precision, int scale,
-			boolean nullable, String sqlType, boolean unique,
+	protected void initMappingColumn(
+			String logicalColumnName,
+			String propertyName, 
+			int length, 
+			int precision, 
+			int scale,
+			boolean nullable, 
+			String sqlType, 
+			boolean unique,
 			boolean applyNamingStrategy) {
 		this.mappingColumn = new Column();
 		//设置列名

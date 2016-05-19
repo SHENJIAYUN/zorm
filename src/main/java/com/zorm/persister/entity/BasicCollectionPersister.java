@@ -14,7 +14,9 @@ import com.zorm.mapping.Collection;
 import com.zorm.session.SessionFactoryImplementor;
 import com.zorm.sql.Delete;
 import com.zorm.sql.Insert;
+import com.zorm.sql.SelectFragment;
 import com.zorm.sql.Update;
+import com.zorm.type.AssociationType;
 import com.zorm.type.Type;
 import com.zorm.util.ArrayHelper;
 
@@ -37,22 +39,43 @@ public class BasicCollectionPersister extends AbstractCollectionPersister{
 	}
 
 	@Override
-	public String selectFragment(Joinable rhs, String rhsAlias,
-			String lhsAlias, String currentEntitySuffix,
-			String currentCollectionSuffix, boolean includeCollectionColumns) {
-		return null;
+	public String selectFragment(Joinable rhs, 
+			String rhsAlias,
+			String lhsAlias, 
+			String entitySuffix,
+			String collectionSuffix, 
+			boolean includeCollectionColumns) {
+		if(rhs != null && isManyToMany() && !rhs.isCollection()){
+			AssociationType elementType = ( ( AssociationType ) getElementType() );
+			if ( rhs.equals( elementType.getAssociatedJoinable( getFactory() ) ) ) {
+				return manyToManySelectFragment( rhs, rhsAlias, lhsAlias, collectionSuffix );
+			}
+		}
+		return includeCollectionColumns ? selectFragment( lhsAlias, collectionSuffix ) : "";
+	}
+
+	private String manyToManySelectFragment(
+			Joinable rhs, 
+			String rhsAlias,
+			String lhsAlias, 
+			String collectionSuffix) {
+		SelectFragment frag = generateSelectFragment( lhsAlias, collectionSuffix );
+		String[] elementsColumnNames = rhs.getKeyColumnNames();
+		frag.addColumns(rhsAlias, elementsColumnNames,elementColumnAliases);
+		
+		return frag.toFragmentString().substring(2);
 	}
 
 	@Override
 	public String whereJoinFragment(String alias, boolean innerJoin,
 			boolean includeSubclasses) {
-		return null;
+		return "";
 	}
 
 	@Override
 	public String fromJoinFragment(String alias, boolean innerJoin,
 			boolean includeSubclasses) {
-		return null;
+		return "";
 	}
 
 	@Override

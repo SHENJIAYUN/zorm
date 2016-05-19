@@ -50,29 +50,6 @@ public interface AvailableSettings {
 	
 	public static final String OUTPUT_STYLESHEET ="zorm.xml.output_stylesheet";
 
-	public static final String C3P0_MAX_SIZE = "zorm.c3p0.max_size";
-	
-	public static final String C3P0_MIN_SIZE = "zorm.c3p0.min_size";
-
-	public static final String C3P0_TIMEOUT = "zorm.c3p0.timeout";
-	
-	public static final String C3P0_MAX_STATEMENTS = "zorm.c3p0.max_statements";
-	
-	public static final String C3P0_ACQUIRE_INCREMENT = "zorm.c3p0.acquire_increment";
-	
-	public static final String C3P0_IDLE_TEST_PERIOD = "zorm.c3p0.idle_test_period";
-
-	public static final String PROXOOL_PREFIX = "zorm.proxool";
-	
-	public static final String PROXOOL_XML = "zorm.proxool.xml";
-	
-	public static final String PROXOOL_PROPERTIES = "zorm.proxool.properties";
-	
-	public static final String PROXOOL_EXISTING_POOL = "zorm.proxool.existing_pool";
-	
-	public static final String PROXOOL_POOL_ALIAS = "zorm.proxool.pool_alias";
-
-	
 	public static final String AUTO_CLOSE_SESSION = "zorm.transaction.auto_close_session";
 	
 	public static final String FLUSH_BEFORE_COMPLETION = "zorm.transaction.flush_before_completion";
@@ -89,12 +66,6 @@ public interface AvailableSettings {
 
 	public static final String USER_TRANSACTION = "jta.UserTransaction";
 
-	public static final String CACHE_REGION_FACTORY = "zorm.cache.region.factory_class";
-
-	public static final String CACHE_PROVIDER_CONFIG = "zorm.cache.provider_configuration_file_resource_path";
-	
-	public static final String CACHE_NAMESPACE = "zorm.cache.jndi";
-	
 	public static final String USE_QUERY_CACHE = "zorm.cache.use_query_cache";
 
 	public static final String QUERY_CACHE_FACTORY = "zorm.cache.query_cache_factory";

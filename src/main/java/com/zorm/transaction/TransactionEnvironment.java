@@ -1,8 +1,8 @@
 package com.zorm.transaction;
 
 import com.zorm.jdbc.JdbcServices;
+import com.zorm.service.JtaPlatform;
 import com.zorm.service.TransactionFactory;
-import com.zorm.service.jta.platform.spi.JtaPlatform;
 import com.zorm.session.SessionFactoryImplementor;
 import com.zorm.stat.StatisticsImplementor;
 

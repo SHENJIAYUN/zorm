@@ -153,7 +153,6 @@ public abstract class CollectionBinder {
 			}
 		}
 		else if ( property.isCollection() ) {
-			//TODO consider using an XClass
 			Class returnedClass = property.getCollectionClass();
 			if ( java.util.Set.class.equals( returnedClass ) ) {
 				result = new SetBinder();
@@ -879,6 +878,10 @@ public abstract class CollectionBinder {
 		collection.setExtraLazy( false );
 		collection.setFetchMode( AnnotationBinder.getFetchMode( fetchType ) );
 		
+	}
+
+	public void setExplicitAssociationTable(boolean explicitAssocTable) {
+		this.isExplicitAssociationTable = explicitAssocTable;
 	}
 
 }

@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.zorm.ConnectionReleaseMode;
+import com.zorm.engine.JoinStatus;
 import com.zorm.engine.SynchronizationRegistryImpl;
-import com.zorm.engine.transaction.spi.JoinStatus;
-import com.zorm.engine.transaction.spi.TransactionImplementor;
+import com.zorm.engine.TransactionImplementor;
 import com.zorm.exception.ResourceClosedException;
 import com.zorm.jdbc.JdbcCoordinator;
 import com.zorm.jdbc.JdbcCoordinatorImpl;
